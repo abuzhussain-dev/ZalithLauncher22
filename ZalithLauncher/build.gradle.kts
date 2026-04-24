@@ -52,17 +52,20 @@ android {
     namespace = zalithPackageName
     compileSdk = 36
 
-    signingConfigs {
+        signingConfigs {
         val debugConfig = create("debugBuild") {
             storeFile = file("zalith_launcher_debug.jks")
             storePassword = defaultStorePassword
             keyAlias = "movtery_zalith_debug"
             keyPassword = defaultKeyPassword
         }
+        
+        // This line is the magic - it copies the debug key to the release build
         create("releaseBuild") {
             initWith(debugConfig)
         }
     }
+
 
     defaultConfig {
         applicationId = zalithPackageName
