@@ -49,6 +49,21 @@ jobs:
         with:
           name: zalith-${{ github.event.inputs.variant }}-arm64
           path: ZalithLauncher/build/outputs/apk/${{ github.event.inputs.variant == 'Debug' && 'debug' || 'release' }}/*.apk
+          java-version: "17"
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build Arm64 APK
+        run: |
+          chmod +x gradlew
+          ./gradlew :ZalithLauncher:assemble${{ github.event.inputs.variant }} -Darch=${{ matrix.arch }}
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: zalith-${{ github.event.inputs.variant }}-arm64
+          path: ZalithLauncher/build/outputs/apk/${{ github.event.inputs.variant == 'Debug' && 'debug' || 'release' }}/*.apk
         with:
           distribution: "temurin"
           java-version: "17"
